@@ -1,0 +1,319 @@
+#!/usr/bin/awk -f
+
+# Description: Print (nerd)icons in front of list of directories/files
+
+# Dependencies: awk, nerd patched font
+
+# Usage
+#    1. Make sure the script is in your PATH
+#    2. Set colors to match your nnn icon colors if necessary
+#    3. preview-tui uses the script to print icons in front of its tree preview
+#    4. Aditionally you can consider adding it to your FZF_DEFAULT_COMMAND to make it work with
+#       various other plugins that use fzf (make sure you also add --ansi to your FZF_DEFAULT_OPTS)
+
+# Author: Luuk van Baal
+
+{
+    FS="."
+    ent[NR]  = $0
+    matched[NR] = toprocess[NR] = ""
+    if ($NF ~ /.*[\*\/]$/)
+          ext[NR]  = substr($NF, 1, length($NF) - 1)
+    else
+          ext[NR] = $NF
+}
+END {
+    # Set colors to match your nnn icon colors defined in icons.h
+    # (https://en.wikipedia.org/wiki/ANSI_escape_code#Colors)
+    color_default = 33     # DodgerBlue
+    color_video = 93       # Purple
+    color_audio = 220      # Gold1
+    color_image = 82       # Chartreuse2
+    color_docs = 202       # OrangeRed1
+    color_archive = 209    # Salmon1
+    color_c = 81           # SteelBlue1
+    color_java = 32        # DeepSkyBlue3
+    color_javascript = 47  # SpringGreen2
+    color_react = 39       # DeepSkyBlue1
+    color_css = 199        # DeepPink1
+    color_python = 227     # LightGoldenrod1
+    color_lua = 19         # LightGoldenrod1
+    color_document = 15    # White
+    color_fsharp = 31      # DeepSkyBlue3
+    color_ruby = 160       # Red3
+    color_scala = 196      # Red1
+    color_vim = 28         # Green4
+
+    icons["directory"] = "" ";" color_default
+    icons["file"] = "" ";" color_default
+    icons["exec"] = "" ";" color_default
+    icons["manual"] = "" ";" color_docs
+
+# top level and common icons
+    icons[".git"] = "" ";" color_default
+    icons["desktop"] = "ﲾ" ";" color_default
+    icons["briefcase"] = "" ";" color_default
+    icons["document"] = "" ";" color_default
+    icons["downloads"] = "" ";" color_default
+    icons["music"] = "" ";" color_default
+    icons["musicfile"] = "" ";" color_audio
+    icons["pictures"] = "" ";" color_default
+    icons["picturefile"] = "" ";" color_image
+    icons["public"] = "" ";" color_default
+    icons["templates"] = "陼" ";" color_default
+    icons["videos"] = "" ";" color_default
+    icons["videofile"] = "ﳜ" ";" color_video
+    icons["changelog"] = "" ";" color_docs
+    icons["configure"] = "" ";" color_default
+    icons["license"] = "" ";" color_docs
+    icons["makefile"] = "" ";" color_default
+    icons["archive"] = "遲" ";" color_archive
+    icons["script"] = "" ";" color_default
+    icons["cplusplus"] = "" ";" color_c
+    icons["java"] = "" ";" color_java
+    icons["clojure"] = "" ";" color_default
+    icons["javascript"] = "" ";" color_javascript
+    icons["linux"] = "" ";" color_default
+    icons["fsharp"] = "" ";" color_fsharp
+    icons["ruby"] = "" ";" color_ruby
+    icons["c"] = "" ";" color_c
+    icons["html"] = "" ";" color_default
+    icons["react"] = "" ";" color_react
+    icons["python"] = "" ";" color_python
+    icons["database"] = "" ";" color_default
+    icons["worddoc"] = "" ";" color_document
+    icons["playlist"] = "蘿" ";" color_audio
+    icons["opticaldisk"] = "ﴞ" ";" color_archive
+
+
+# numbers
+    icons["1"] = icons["manual"]
+    icons["7z"] = icons["archive"]
+
+# a
+    icons["a"] = icons["manual"]
+    icons["apk"] = icons["archive"]
+    icons["asm"] = icons["file"]
+    icons["aup"] = icons["musicfile"]
+    icons["avi"] = icons["videofile"]
+
+# b
+    icons["bat"] = icons["script"]
+    icons["bin"] = "" ";" color_default
+    icons["bmp"] = icons["picturefile"]
+    icons["bz2"] = icons["archive"]
+
+# c
+    icons["c"] = icons["c"]
+    icons["cplusplus"] = icons["cplusplus"]
+    icons["cab"] = icons["archive"]
+    icons["cbr"] = icons["archive"]
+    icons["cbz"] = icons["archive"]
+    icons["cc"] = icons["cplusplus"]
+    icons["class"] = icons["java"]
+    icons["clj"] = icons["clojure"]
+    icons["cljc"] = icons["clojure"]
+    icons["cljs"] = icons["clojure"]
+    icons["cmake"] = icons["makefile"]
+    icons["coffee"] = "" ";" color_default
+    icons["conf"] = icons["configure"]
+    icons["cpio"] = icons["archive"]
+    icons["cpp"] = icons["cplusplus"]
+    icons["css"] = "" ";" color_css
+    icons["cue"] = icons["playlist"]
+    icons["cvs"] = icons["configure"]
+    icons["cxx"] = icons["cplusplus"]
+
+# d
+    icons["db"] = icons["database"]
+    icons["deb"] = "" ";" color_archive
+    icons["diff"] = "繁" ";" color_default
+    icons["dll"] = icons["script"]
+    icons["doc"] = icons["worddoc"]
+    icons["docx"] = icons["worddoc"]
+
+# e
+    icons["ejs"] = icons["javascript"]
+    icons["elf"] = icons["linux"]
+    icons["epub"] = icons["manual"]
+    icons["exe"] = icons["exec"]
+
+# f
+    icons["fsharp"] = icons["fsharp"]
+    icons["flac"] = icons["musicfile"]
+    icons["flv"] = icons["videofile"]
+    icons["fs"] = icons["fsharp"]
+    icons["fsi"] = icons["fsharp"]
+    icons["fsscript"] = icons["fsharp"]
+    icons["fsx"] = icons["fsharp"]
+
+# g
+    icons["gem"] = icons["ruby"]
+    icons["gif"] = icons["picturefile"]
+    icons["go"] = "ﳑ" ";" color_default
+    icons["gz"] = icons["archive"]
+    icons["gzip"] = icons["archive"]
+
+# h
+    icons["h"] = icons["c"]
+    icons["hh"] = icons["cplusplus"]
+    icons["htaccess"] = icons["configure"]
+    icons["htpasswd"] = icons["configure"]
+    icons["htm"] = icons["htm"]
+    icons["html"] = icons["htm"]
+    icons["hxx"] = icons["cplusplus"]
+
+# i
+    icons["ico"] = icons["picturefile"]
+    icons["img"] = icons["picturefile"]
+    icons["ini"] = icons["configure"]
+    icons["iso"] = icons["opticaldisc"]
+
+# j
+    icons["jar"] = icons["java"]
+    icons["java"] = icons["java"]
+    icons["jl"] = icons["configure"]
+    icons["jpeg"] = icons["picturefile"]
+    icons["jpg"] = icons["picturefile"]
+    icons["js"] = icons["javascript"]
+    icons["json"] = "ﬥ" ";" color_javascript
+    icons["jsx"] = icons["react"]
+
+# k
+
+# l
+    icons["lha"] = icons["archive"]
+    icons["ilog"] = icons["document"]
+    icons["lua"] = "" ";" color_default
+    icons["lzh"] = icons["archive"]
+    icons["lzma"] = icons["archive"]
+
+# m
+    icons["m4a"] = icons["musicfile"]
+    icons["m4v"] = icons["videofile"]
+    icons["markdown"] = "" ";" color_docs
+    icons["md"] = "" ";" color_docs
+    icons["mk"] = icons["makefile"]
+    icons["mkv"] = icons["videofile"]
+    icons["mov"] = icons["videofile"]
+    icons["mp3"] = icons["musicfile"]
+    icons["mp4"] = icons["videofile"]
+    icons["mpeg"] = icons["videofile"]
+    icons["mpg"] = icons["videofile"]
+    icons["msi"] = "者" ";" color_default
+
+# n
+
+# o
+    icons["o"] = icons["manual"]
+    icons["ogg"] = icons["musicfile"]
+    icons["odownload"] = icons["download"]
+    icons["out"] = icons["linux"]
+
+# p
+    icons["part"] = icons["download"]
+    icons["patch"] = "繁" ";" color_default
+    icons["pdf"] = "" ";" color_docs
+    icons["php"] = "" ";" color_default
+    icons["png"] = icons["picturefile"]
+    icons["ppt"] = "" ";" color_default
+    icons["pptx"] = "" ";" color_default
+    icons["psb"] = "" ";" color_default
+    icons["psd"] = "" ";" color_default
+    icons["py"] = icons["python"]
+    icons["pyc"] = icons["python"]
+    icons["pyd"] = icons["python"]
+    icons["pyo"] = icons["python"]
+
+# q
+
+# r
+    icons["rar"] = icons["archive"]
+    icons["rc"] = icons["configure"]
+    icons["rom"] = "" ";" color_default
+    icons["rpm"] = icons["archive"]
+    icons["rss"] = "參" ";" color_default
+    icons["rtf"] = "" ";" color_default
+
+# s
+    icons["sass"] = "" ";" color_css
+    icons["scss"] = "" ";" color_css
+    icons["so"] = icons["manual"]
+    icons["scala"] = "" ";" color_scala
+    icons["sh"] = icons["script"]
+    icons["slim"] = icons["script"]
+    icons["sln"] = "" ";" color_default
+    icons["sql"] = icons["database"]
+    icons["srt"] = "" ";" color_default
+    icons["isub"] = "" ";" color_default
+    icons["svg"] = icons["picturefile"]
+
+# t
+    icons["tar"] = icons["archive"]
+    icons["tex"] = "" ";" color_default
+    icons["tgz"] = icons["archive"]
+    icons["ts"] = "" ";" color_javascript
+    icons["tsx"] = icons["react"]
+    icons["txt"] = icons["document"]
+    icons["txz"] = icons["archive"]
+
+# u
+
+# v
+    icons["vid"] = icons["videofile"]
+    icons["vim"] = "" ";" color_vim
+    icons["vimrc"] = "" ";" color_vim
+    icons["vtt"] =  "" ";" color_default
+# w
+    icons["wav"] = icons["musicfile"]
+    icons["webm"] = icons["videofile"]
+    icons["wma"] = icons["videofile"]
+    icons["wmv"] = icons["videofile"]
+
+# x
+    icons["xbps"] = icons["archive"]" " color_archive
+    icons["xhtml"] = icons["htm"]
+    icons["xls"] = "" ";" color_default
+    icons["xlsx"] = "" ";" color_default
+    icons["xml"] = icons["html"]
+    icons["xz"] = icons["archive"]
+
+# y
+    icons["yaml"] = icons["configure"]
+    icons["yml"] = icons["configure"]
+# z
+    icons["zip"] = icons["archive"]
+
+    j = 0;
+
+    while (length(toprocess) > 0 && j < length(icons)) {
+        for (i in ent) {
+            if (ext[i] in icons) {
+                matched[i] = icons[ext[i]]
+                delete toprocess[i]
+            }
+            j++
+        }
+    }
+
+# Print icons, set color and bold directories by using ansi escape codes
+    for (i in ent) {
+        if (matched[i] != "") {
+            if (substr(ent[i] ,length(ent[i]), 1) == "/" )
+                printcolor(matched[i] ";" ent[i], "0")
+            else
+                printcolor(matched[i] ";" ent[i], "0")
+        }
+        else if (substr(ent[i] ,length(ent[i]), 1) == "/" )
+            printcolor(icons["directory"] ";"  ent[i], "1")
+        else if (substr(ent[i], length(ent[i]), 1) == "*" )
+            printcolor(icons["exe"] ";" ent[i], "0")
+        else
+            printcolor(icons["file"] ";" ent[i], "0")
+    }
+}
+
+function printcolor(s, b) {
+    split(s, a, ";")
+    printf "\033[%s;38;5;%sm%s \033[38;5;%sm%s\n", b, a[2], a[1], color_default, a[3]
+}
