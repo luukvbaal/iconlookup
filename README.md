@@ -1,4 +1,4 @@
-<center><a><img src="https://i.imgur.com/6AUSXv1.png"></a></center>
+<center><a><img src="https://i.imgur.com/d8WC0UQ.png"></a></center>
 
 Expects a directory listing in stdin and prepends icons based on the file extension. If the input is in `tree -F` or `ls -F` format, directories, sockets, executables and pipes are also distinguished.
 

@@ -298,9 +298,10 @@ color_vim=109     #color_vim="143;188;187"
     }
 }
 {
+    # dont print cwd . and leading ./ from tree -f
     if ($0 ~/^\.$/)
         next
-    ent = $0
+    ent = ($0 ~/^\.\//) ? substr($0, 3, length($0) - 2) : $0
     ext = $NF
 
     # Print icons, set color and bold directories by using ansi escape codes
