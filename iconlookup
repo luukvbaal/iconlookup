@@ -296,6 +296,7 @@ color_vim=109     #color_vim="143;188;187"
             escape="\033[38;2;"
             break;
     }
+    bstr = ENVIRON["beforestr"]
 }
 {
     # dont print cwd . and leading ./ from tree -f
@@ -310,19 +311,19 @@ color_vim=109     #color_vim="143;188;187"
     else
         switch (substr(ent, length(ent), 1)) {
             case "/":
-                printcolor(icons["directory"][1], color_default, color_dirtxt, ent, "1")
+              printcolor(icons["directory"][1], color_default, color_dirtxt, substr(ent, 1, length(ent) - 1), "1")
                 break;
             case "*":
-                printcolor(icons["exe"][1], color_default, color_filetxt, ent, "10")
+                printcolor(icons["exe"][1], color_default, color_filetxt, substr(ent, 1, length(ent) - 1), "10")
                 break;
             case "|":
-                printcolor(icons["pipe"][1], color_default, color_filetxt, ent, "10")
+                printcolor(icons["pipe"][1], color_default, color_filetxt, substr(ent, 1, length(ent) - 1), "10")
                 break;
             case "=":
-                printcolor(icons["socket"][1], color_default, color_filetxt, ent, "10")
+                printcolor(icons["socket"][1], color_default, color_filetxt, substr(ent, 1, length(ent) - 1), "10")
                 break;
             case ">":
-                printcolor(icons["door"][1], color_default, color_filetxt, ent, "10")
+                printcolor(icons["door"][1], color_default, color_filetxt, substr(ent, 1, length(ent) - 1), "10")
                 break;
             default:
                 printcolor(icons["file"][1], color_default, color_filetxt, ent, "10")
@@ -332,16 +333,16 @@ function printcolor(i, c, d, n, b) {
     if (limit != "" && length(n) + 2 > limit)
         n = substr(n, 1, limit - 2)
     printf "\033[0m"
-    printf "%s%s;%sm%s %s%sm%s\n", escape, c, b, i, escape, d, n
+    printf "%s%s%s;%sm%s %s%sm%s\n", bstr, escape, c, b, i, escape, d, n
 }'
 printf '\033[0m'
 }
 
-print_before() {
+print_begin() {
     printf '%s\n' "$1" | sed 's/\\n/\n/g'
 }
 
-print_after() {
+print_end() {
     printf '%s\n' "$1" | sed 's/\\n/\n/g'
 }
 
@@ -349,8 +350,7 @@ print_help() {
     printf 'Icon Lookup\n
 Usage:
     iconlookup [options]
-    iconlookup -b [string]
-    iconlookup -a [string]
+    iconlookup [-bBe] [string]
     iconlookup -l [number]
     iconlookup (-h | --help)
 
@@ -358,8 +358,9 @@ Usage:
 
 Options:
     -h --help -?         Show this screen.
-    -a --after           Append string after output.
-    -b --before          Prepend string before output.
+    -b --before          Prepend str before icon.
+    -B --begin           Prepend str before output.
+    -e --end             Append str after output.
     -l --limit           Limit line length to [number] characters.'
 }
 
@@ -368,23 +369,22 @@ while :; do
         -h|-\?|--help)
             print_help
             exit ;;
+        -B|--begin)
+            if [ -n "$2" ]; then
+                print_begin "$2"
+            fi
+            shift ;;
+        -e|--end)
+            if [ -n "$2" ]; then
+                end=1
+                endstr="$2"
+            fi
+            shift ;;
         -b|--before)
             if [ -n "$2" ]; then
-                print_before "$2"
-                shift
-            else
-                printf 'ERROR: "--before" requires a non-empty option argument.\n'
-                exit
-            fi ;;
-        -a|--after)
-            if [ -n "$2" ]; then
-                after=1
-                afterstring="$2"
-                shift
-            else
-                printf 'ERROR: "--after" requires a non-empty option argument.\n'
-                exit
-            fi ;;
+                export beforestr="$2"
+            fi
+            shift ;;
         -l|--limit)
             if [ -n "$2" ]; then
                 export limit="$2"
@@ -404,11 +404,12 @@ while :; do
 done
 
 if [ ! -t 0 ]; then
+    [ -n "$beforestr" ] && limit="$((limit - ${#beforestr}))"
     icon_lookup
 else
     printf 'ERROR: no data provided...\nExpecting a directory listing in stdin\n'
 fi
 
-if [ -n "$after" ]; then
-    print_after "$afterstring"
+if [ -n "$end" ]; then
+    print_end "$endstr"
 fi
