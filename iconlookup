@@ -18,27 +18,27 @@ icon_lookup() {
 awk 'BEGIN {
 # Set your ANSI colorscheme below (https://en.wikipedia.org/wiki/ANSI_escape_code#Colors)
 # Default uses 8-bit nord theme (24-bit commented out)
-colordepth=8      #colordepth=24
-color_dirtxt=111  #color_dirtxt="129;161;193"
-color_filetxt=111 #color_filetxt="129;161;193"
-color_default=111 #color_default="129;161;193"
-color_video=110   #color_video="136;192;208"
-color_audio=150   #color_audio="163;190;140"
-color_image=150   #color_image="163;190;140"
-color_docs=173    #color_docs="208;135;112"
-color_archive=179 #color_archive="235;203;139"
-color_c=150       #color_c="163;190;140"
-color_java=139    #color_java="180;142;173"
-color_js=109      #color_js="143;188;187"
-color_react=111   #color_react="129;161;193"
-color_css=110     #color_css="136;192;208"
-color_python=68   #color_python="94;129;172"
-color_lua=167     #color_lua="191;97;106"
-color_document=17 #color_document="208;135;112"
-color_fsharp=179  #color_fsharp="180;142;173"
-color_ruby=150    #color_ruby="163;190;140"
-color_scala=139   #color_scala="143;188;187"
-color_vim=109     #color_vim="143;188;187"
+    colordepth=8      #colordepth=24
+    color_dirtxt=111  #color_dirtxt="129;161;193"
+    color_filetxt=111 #color_filetxt="129;161;193"
+    color_default=111 #color_default="129;161;193"
+    color_video=110   #color_video="136;192;208"
+    color_audio=150   #color_audio="163;190;140"
+    color_image=150   #color_image="163;190;140"
+    color_docs=173    #color_docs="208;135;112"
+    color_archive=179 #color_archive="235;203;139"
+    color_c=150       #color_c="163;190;140"
+    color_java=139    #color_java="180;142;173"
+    color_js=109      #color_js="143;188;187"
+    color_react=111   #color_react="129;161;193"
+    color_css=110     #color_css="136;192;208"
+    color_python=68   #color_python="94;129;172"
+    color_lua=167     #color_lua="191;97;106"
+    color_document=111#color_document="208;135;112"
+    color_fsharp=179  #color_fsharp="180;142;173"
+    color_ruby=150    #color_ruby="163;190;140"
+    color_scala=139   #color_scala="143;188;187"
+    color_vim=109     #color_vim="143;188;187"
 
 # icons[][1] contains icon and icons[][2] contains color
     icons["directory"][1] = ""; icons["directory"][2] = color_default
@@ -67,7 +67,7 @@ color_vim=109     #color_vim="143;188;187"
     icons["configure"][1] = ""; icons["configure"][2] = color_default
     icons["license"][1] = ""; icons["license"][2] = color_docs
     icons["makefile"][1] = ""; icons["makefile"][2] = color_default
-    icons["archive"][1] = "遲"; icons["archive"][2] = color_archive
+    icons["archive"][1] = ""; icons["archive"][2] = color_archive
     icons["script"][1] = ""; icons["script"][2] = color_default
     icons["cplusplus"][1] = ""; icons["cplusplus"][2] = color_c
     icons["java"][1] = ""; icons["java"][2] = color_java
@@ -83,7 +83,7 @@ color_vim=109     #color_vim="143;188;187"
     icons["database"][1] = ""; icons["database"][2] = color_default
     icons["worddoc"][1] = ""; icons["worddoc"][2] = color_document
     icons["playlist"][1] = "蘿"; icons["playlist"][2] = color_audio
-    icons["opticaldisk"][1] = "ﴞ"; icons["opticaldisk"][2] = color_archive
+    icons["opticaldisk"][1] = ""; icons["opticaldisk"][2] = color_archive
 
 # numbers
     icons["1"][1] = icons["manual"][1]; icons["1"][2] = icons["manual"][2]
@@ -126,7 +126,7 @@ color_vim=109     #color_vim="143;188;187"
 # d
     icons["db"][1] = icons["database"][1]; icons["db"][2] = icons["database"][2]
     icons["deb"][1] = ""; icons["deb"][2] = color_archive
-    icons["diff"][1] = "繁"; icons["diff"][2] = color_default
+    icons["diff"][1] = ""; icons["diff"][2] = color_default
     icons["dll"][1] = icons["script"][1]; icons["dll"][2] = icons["script"][2]
     icons["doc"][1] = icons["worddoc"][1]; icons["doc"][2] = icons["worddoc"][2]
     icons["docx"][1] = icons["worddoc"][1]; icons["docx"][2] = icons["worddoc"][2]
@@ -164,7 +164,7 @@ color_vim=109     #color_vim="143;188;187"
 
 # i
     icons["ico"][1] = icons["picturefile"][1]; icons["ico"][2] = icons["picturefile"][2]
-    icons["img"][1] = icons["picturefile"][1]; icons["img"][2] = icons["picturefile"][2]
+    icons["img"][1] = icons["opticaldisc"][1]; icons["img"][2] = icons["opticaldisc"][2]
     icons["ini"][1] = icons["configure"][1]; icons["ini"][2] = icons["configure"][2]
     icons["iso"][1] = icons["opticaldisc"][1]; icons["iso"][2] = icons["opticaldisc"][2]
 
@@ -199,7 +199,7 @@ color_vim=109     #color_vim="143;188;187"
     icons["mp4"][1] = icons["videofile"][1]; icons["mp4"][2] = icons["videofile"][2]
     icons["mpeg"][1] = icons["videofile"][1]; icons["mpeg"][2] = icons["videofile"][2]
     icons["mpg"][1] = icons["videofile"][1]; icons["mpg"][2] = icons["videofile"][2]
-    icons["msi"][1] = "者"; icons["msi"][2] = color_default
+    icons["msi"][1] = ""; icons["msi"][2] = color_default
 
 # n
 
@@ -211,7 +211,7 @@ color_vim=109     #color_vim="143;188;187"
 
 # p
     icons["part"][1] = icons["download"][1]; icons["part"][2] = icons["download"][2]
-    icons["patch"][1] = "繁"; icons["patch"][2] = color_default
+    icons["patch"][1] = icons["diff"][1]; icons["patch"][2] = icons["diff"][2]
     icons["pdf"][1] = ""; icons["pdf"][2] = color_docs
     icons["php"][1] = ""; icons["php"][2] = color_default
     icons["png"][1] = icons["picturefile"][1]; icons["png"][2] = icons["picturefile"][2]
@@ -270,7 +270,8 @@ color_vim=109     #color_vim="143;188;187"
     icons["wmv"][1] = icons["videofile"][1]; icons["wmv"][2] = icons["videofile"][2]
 
 # x
-    icons["xbps"][1] = icons["archive"][1]" " color_archive
+    icons["xbps"][1] = icons["archive"][1]; icons["xbps"][2] = color_archive
+    icons["xcf"][1] = icons["picturefile"][1]; icons["xcf"][2] =  color_image
     icons["xhtml"][1] = icons["htm"][1]; icons["xhtml"][2] = icons["htm"][2]
     icons["xls"][1] = ""; icons["xls"][2] = color_default
     icons["xlsx"][1] = ""; icons["xlsx"][2] = color_default
@@ -311,19 +312,19 @@ color_vim=109     #color_vim="143;188;187"
     else
         switch (substr(ent, length(ent), 1)) {
             case "/":
-              printcolor(icons["directory"][1], color_default, color_dirtxt, substr(ent, 1, length(ent) - 1), "1")
+              printcolor(icons["directory"][1], color_default, color_dirtxt, ent, "1")
                 break;
             case "*":
-                printcolor(icons["exe"][1], color_default, color_filetxt, substr(ent, 1, length(ent) - 1), "10")
+                printcolor(icons["exe"][1], color_default, color_filetxt, ent, "10")
                 break;
             case "|":
-                printcolor(icons["pipe"][1], color_default, color_filetxt, substr(ent, 1, length(ent) - 1), "10")
+                printcolor(icons["pipe"][1], color_default, color_filetxt, ent, "10")
                 break;
             case "=":
-                printcolor(icons["socket"][1], color_default, color_filetxt, substr(ent, 1, length(ent) - 1), "10")
+                printcolor(icons["socket"][1], color_default, color_filetxt, ent, "10")
                 break;
             case ">":
-                printcolor(icons["door"][1], color_default, color_filetxt, substr(ent, 1, length(ent) - 1), "10")
+                printcolor(icons["door"][1], color_default, color_filetxt, ent, "10")
                 break;
             default:
                 printcolor(icons["file"][1], color_default, color_filetxt, ent, "10")
