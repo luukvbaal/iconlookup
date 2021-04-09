@@ -8,7 +8,8 @@
 #    1. Set colors and/or icons to your liking
 #    2. Pipe any directory listing to iconlookup and it will output prepended icons
 #    3. Aditionally you can consider adding it to your FZF_DEFAULT_COMMAND to make
-#       it work with fzf (make sure you also add --ansi to your FZF_DEFAULT_OPTS)
+#       it work with fzf (make sure you also add --ansi and or for example
+#       --preview=\"bat '$(echo {} | sed 's/[|=>*]$//')' to your FZF_DEFAULT_OPTS)
 
 # Shell: POSIX compliant
 
